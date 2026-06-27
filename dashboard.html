@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | ByteHex Internship Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom Style CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+
+  <!-- Custom Cursor Followers -->
+  <div class="custom-cursor"></div>
+  <div class="custom-cursor-follower"></div>
+
+  <div class="wrapper">
+    <!-- Sidebar Container (Injected dynamically) -->
+    <div id="sidebar-container"></div>
+
+    <!-- Page Content -->
+    <div id="content">
+      <!-- Navbar Container (Injected dynamically) -->
+      <div id="navbar-container"></div>
+
+      <!-- Main Dashboard View -->
+      <div class="container-fluid p-4">
+        <!-- Breadcrumbs -->
+        <div id="breadcrumb-container"></div>
+
+        <!-- Dashboard Welcoming -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+          <div>
+            <h2 class="fw-bold m-0 text-color">Dashboard Overview</h2>
+            <p class="text-muted m-0" style="font-size: 0.9rem;">Real-time metrics, logs, and activity trackers</p>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-primary px-3 py-2 fs-6 rounded-pill"><i class="bi bi-clock-fill me-1"></i> <span id="current-date-lbl">June 2026</span></span>
+          </div>
+        </div>
+
+        <!-- Statistical Grid -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4 mb-4">
+          <!-- Total Interns -->
+          <div class="col">
+            <div class="glass-card stats-card">
+              <div class="stats-info">
+                <h6>Total Interns</h6>
+                <h3 id="stat-total-interns">0</h3>
+              </div>
+              <div class="stats-icon-wrapper icon-blue">
+                <i class="bi bi-people-fill"></i>
+              </div>
+            </div>
+          </div>
+          <!-- Active Interns -->
+          <div class="col">
+            <div class="glass-card stats-card">
+              <div class="stats-info">
+                <h6>Active Interns</h6>
+                <h3 id="stat-active-interns">0</h3>
+              </div>
+              <div class="stats-icon-wrapper icon-sky">
+                <i class="bi bi-person-check-fill"></i>
+              </div>
+            </div>
+          </div>
+          <!-- Completed Interns -->
+          <div class="col">
+            <div class="glass-card stats-card">
+              <div class="stats-info">
+                <h6>Completed Interns</h6>
+                <h3 id="stat-completed-interns">0</h3>
+              </div>
+              <div class="stats-icon-wrapper icon-teal">
+                <i class="bi bi-award-fill"></i>
+              </div>
+            </div>
+          </div>
+          <!-- Today's Attendance -->
+          <div class="col">
+            <div class="glass-card stats-card">
+              <div class="stats-info">
+                <h6>Today's Attendance</h6>
+                <h3 id="stat-today-attendance">0%</h3>
+              </div>
+              <div class="stats-icon-wrapper icon-purple">
+                <i class="bi bi-calendar-check"></i>
+              </div>
+            </div>
+          </div>
+          <!-- Task Completion -->
+          <div class="col">
+            <div class="glass-card stats-card">
+              <div class="stats-info">
+                <h6>Task Completion</h6>
+                <h3 id="stat-task-completion">0%</h3>
+              </div>
+              <div class="stats-icon-wrapper icon-red">
+                <i class="bi bi-check2-all"></i>
+              </div>
+            </div>
+          </div>
+          <!-- Avg Performance -->
+          <div class="col">
+            <div class="glass-card stats-card">
+              <div class="stats-info">
+                <h6>Avg Performance</h6>
+                <h3 id="stat-avg-performance">0%</h3>
+              </div>
+              <div class="stats-icon-wrapper icon-orange">
+                <i class="bi bi-speedometer2"></i>
+              </div>
+            </div>
+          </div>
+          <!-- Best Performer -->
+          <div class="col-12 col-md-6 col-xl-4">
+            <div class="glass-card stats-card" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(20, 184, 166, 0.05) 100%);">
+              <div class="stats-info">
+                <h6>Best Performer</h6>
+                <h3 id="stat-best-performer" style="font-size: 1.3rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;">None</h3>
+                <small id="stat-best-score" class="text-accent font-weight-bold">Score: 0%</small>
+              </div>
+              <div class="stats-icon-wrapper text-white" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); box-shadow: 0 4px 10px rgba(245, 158, 11, 0.25);">
+                <i class="bi bi-trophy-fill"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row g-4 mb-4">
+          <!-- Domain Distribution -->
+          <div class="col-12 col-lg-4">
+            <div class="glass-card p-4 h-100">
+              <h5 class="fw-bold mb-3 text-color">Intern Domains</h5>
+              <div class="chart-container" style="position: relative; height:240px;">
+                <canvas id="domainChart"></canvas>
+              </div>
+            </div>
+          </div>
+          <!-- Tasks Status -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="glass-card p-4 h-100">
+              <h5 class="fw-bold mb-3 text-color">Task Completion status</h5>
+              <div class="chart-container" style="position: relative; height:240px;">
+                <canvas id="tasksChart"></canvas>
+              </div>
+            </div>
+          </div>
+          <!-- Attendance Trend -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="glass-card p-4 h-100">
+              <h5 class="fw-bold mb-3 text-color">Weekly Attendance Rate</h5>
+              <div class="chart-container" style="position: relative; height:240px;">
+                <canvas id="attendanceChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Registrations & Quick Actions -->
+        <div class="row g-4 mb-4">
+          <!-- Recent Registered Interns Table -->
+          <div class="col-12 col-xl-8">
+            <div class="glass-card p-4 h-100">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold m-0 text-color">Recent Registrations</h5>
+                <a href="interns.html" class="btn btn-sm btn-link text-primary text-decoration-none">View All Interns <i class="bi bi-chevron-right"></i></a>
+              </div>
+              <div class="table-responsive table-responsive-custom">
+                <table class="table table-custom table-hover">
+                  <thead>
+                    <tr>
+                      <th>Intern ID</th>
+                      <th>Name</th>
+                      <th>Domain</th>
+                      <th>Joining Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-interns-table">
+                    <!-- Injected via javascript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions & Announcements -->
+          <div class="col-12 col-xl-4 d-flex flex-column gap-4">
+            <!-- Announcements list -->
+            <div class="glass-card p-4 flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold m-0 text-color">Latest Bulletins</h5>
+                <a href="announcements.html" class="btn btn-sm btn-link text-primary text-decoration-none">Manage</a>
+              </div>
+              <div class="d-flex flex-column gap-3" id="announcements-feed">
+                <!-- Injected via dashboard.js -->
+              </div>
+            </div>
+
+            <!-- Quick Action Grid -->
+            <div class="glass-card p-4">
+              <h5 class="fw-bold mb-3 text-color">Quick Shortcuts</h5>
+              <div class="row g-2">
+                <div class="col-6">
+                  <a href="add-intern.html" class="quick-action-btn h-100">
+                    <i class="bi bi-person-plus-fill"></i>
+                    <span style="font-size: 0.8rem;">Add Intern</span>
+                  </a>
+                </div>
+                <div class="col-6">
+                  <a href="tasks.html" class="quick-action-btn h-100">
+                    <i class="bi bi-plus-square-fill"></i>
+                    <span style="font-size: 0.8rem;">Assign Task</span>
+                  </a>
+                </div>
+                <div class="col-6">
+                  <a href="attendance.html" class="quick-action-btn h-100">
+                    <i class="bi bi-calendar2-check-fill"></i>
+                    <span style="font-size: 0.8rem;">Attendance</span>
+                  </a>
+                </div>
+                <div class="col-6">
+                  <a href="performance.html" class="quick-action-btn h-100">
+                    <i class="bi bi-speedometer2"></i>
+                    <span style="font-size: 0.8rem;">Grades</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle with Popper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- App JS Files -->
+  <script src="storage.js"></script>
+  <script src="utilities.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

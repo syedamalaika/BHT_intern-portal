@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Management | ByteHex Internship Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom Style CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="responsive.css">
+  <style>
+    /* Kanban Styles */
+    .kanban-col {
+      min-height: 500px;
+      border-radius: var(--border-radius);
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.02);
+      border: 1px solid var(--card-border);
+    }
+    [data-theme="dark"] .kanban-col {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .task-card {
+      margin-bottom: 16px;
+      cursor: grab;
+      border-left: 4px solid var(--primary);
+    }
+    .task-card.priority-high { border-left-color: #EF4444; }
+    .task-card.priority-medium { border-left-color: #F59E0B; }
+    .task-card.priority-low { border-left-color: #0EA5E9; }
+    
+    .countdown-timer {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #EF4444;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .countdown-timer.completed {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor Followers -->
+  <div class="custom-cursor"></div>
+  <div class="custom-cursor-follower"></div>
+
+  <div class="wrapper">
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Page Content -->
+    <div id="content">
+      <!-- Navbar Container -->
+      <div id="navbar-container"></div>
+
+      <!-- Main Directory View -->
+      <div class="container-fluid p-4">
+        <!-- Breadcrumbs -->
+        <div id="breadcrumb-container"></div>
+
+        <!-- Directory Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+          <div>
+            <h2 class="fw-bold m-0 text-color">Tasks Portal</h2>
+            <p class="text-muted m-0" style="font-size: 0.9rem;">Assign duties, track timelines, and supervise intern deliverables</p>
+          </div>
+          <div>
+            <button type="button" class="btn btn-primary-custom d-flex align-items-center gap-2" onclick="openCreateTaskModal()">
+              <i class="bi bi-plus-square-fill"></i> Assign New Task
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress Overview Widget -->
+        <div class="glass-card p-4 mb-4">
+          <div class="row align-items-center g-3">
+            <div class="col-12 col-md-3">
+              <h5 class="fw-bold mb-1 text-color">Board Progress</h5>
+              <p class="text-muted m-0" style="font-size: 0.85rem;" id="board-ratio-lbl">0 of 0 Tasks Completed</p>
+            </div>
+            <div class="col-12 col-md-7">
+              <div class="progress" style="height: 16px; border-radius: 8px; background: rgba(0,0,0,0.05);">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" id="global-task-progress-bar" style="width: 0%; background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); border-radius: 8px;"></div>
+              </div>
+            </div>
+            <div class="col-12 col-md-2 text-md-end">
+              <h3 class="fw-bold m-0 text-primary" id="board-percentage-lbl">0%</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="glass-card p-3 mb-4">
+          <div class="row g-3 align-items-center justify-content-between">
+            <div class="col-12 col-md-6">
+              <div class="input-group">
+                <span class="input-group-text bg-transparent border-end-0 border-light-subtle" style="border-radius: 10px 0 0 10px;"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" class="form-control form-control-custom border-start-0 ps-0" id="task-search" placeholder="Search tasks by title, description or assigned intern name..." style="border-radius: 0 10px 10px 0;">
+              </div>
+            </div>
+            <div class="col-12 col-md-3">
+              <select class="form-select form-control-custom" id="task-priority-filter">
+                <option value="">All Priorities</option>
+                <option value="High">High Priority</option>
+                <option value="Medium">Medium Priority</option>
+                <option value="Low">Low Priority</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kanban Board Row -->
+        <div class="row g-4">
+          <!-- Pending Column -->
+          <div class="col-12 col-lg-4">
+            <div class="kanban-col h-100">
+              <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="p-2 bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center" style="width:32px; height:32px;"><i class="bi bi-clock-history"></i></span>
+                  <h5 class="fw-bold m-0 text-color">Pending</h5>
+                </div>
+                <span class="badge bg-secondary rounded-pill" id="badge-count-pending">0</span>
+              </div>
+              <div id="col-pending" style="min-height: 450px;">
+                <!-- Injected via tasks.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- In Progress Column -->
+          <div class="col-12 col-lg-4">
+            <div class="kanban-col h-100">
+              <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="p-2 bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center" style="width:32px; height:32px;"><i class="bi bi-play-circle-fill"></i></span>
+                  <h5 class="fw-bold m-0 text-color">In Progress</h5>
+                </div>
+                <span class="badge bg-secondary rounded-pill" id="badge-count-inprogress">0</span>
+              </div>
+              <div id="col-inprogress" style="min-height: 450px;">
+                <!-- Injected via tasks.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Completed Column -->
+          <div class="col-12 col-lg-4">
+            <div class="kanban-col h-100">
+              <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="p-2 bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center" style="width:32px; height:32px;"><i class="bi bi-check-circle-fill"></i></span>
+                  <h5 class="fw-bold m-0 text-color">Completed</h5>
+                </div>
+                <span class="badge bg-secondary rounded-pill" id="badge-count-completed">0</span>
+              </div>
+              <div id="col-completed" style="min-height: 450px;">
+                <!-- Injected via tasks.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Task Create / Edit Modal -->
+  <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-card border border-light-subtle p-3" style="background-color: var(--bg-color);">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold text-color" id="taskModalLabel">Assign New Task</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: var(--text-color) === '#F8FAFC' ? 'invert(1)' : 'none';"></button>
+        </div>
+        <form id="taskForm">
+          <input type="hidden" id="task-id">
+          <div class="modal-body py-2">
+            <!-- Task Title -->
+            <div class="mb-3">
+              <label for="task-title" class="form-label fw-semibold" style="font-size: 0.85rem;">Task Title</label>
+              <input type="text" class="form-control form-control-custom" id="task-title" placeholder="e.g. Fix Navigation Layout" required>
+            </div>
+            <!-- Task Description -->
+            <div class="mb-3">
+              <label for="task-description" class="form-label fw-semibold" style="font-size: 0.85rem;">Description</label>
+              <textarea class="form-control form-control-custom" id="task-description" rows="3" placeholder="Specify task instructions..." required></textarea>
+            </div>
+            <!-- Assigned Intern -->
+            <div class="mb-3">
+              <label for="task-assignee" class="form-label fw-semibold" style="font-size: 0.85rem;">Assign To</label>
+              <select class="form-select form-control-custom" id="task-assignee" required>
+                <option value="" disabled selected>Select an Intern</option>
+                <!-- Filled dynamically -->
+              </select>
+            </div>
+            <!-- Priority & Status -->
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label for="task-priority" class="form-label fw-semibold" style="font-size: 0.85rem;">Priority</label>
+                <select class="form-select form-control-custom" id="task-priority" required>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label for="task-status" class="form-label fw-semibold" style="font-size: 0.85rem;">Status</label>
+                <select class="form-select form-control-custom" id="task-status" required>
+                  <option value="Pending">Pending</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+            </div>
+            <!-- Deadline Date & Time -->
+            <div class="mb-3">
+              <label for="task-deadline" class="form-label fw-semibold" style="font-size: 0.85rem;">Deadline (Date & Time)</label>
+              <input type="datetime-local" class="form-control form-control-custom" id="task-deadline" required>
+            </div>
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-outline-secondary px-3" data-bs-dismiss="modal" style="border-radius: 8px;">Cancel</button>
+            <button type="submit" class="btn btn-primary-custom px-4" id="btn-save-task" style="border-radius: 8px;">Assign Task</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Task Confirmation Modal -->
+  <div class="modal fade" id="deleteTaskModal" tabindex="-1" aria-labelledby="deleteTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-card border border-light-subtle p-3" style="background-color: var(--bg-color);">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold text-color" id="deleteTaskModalLabel">Delete Task</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body py-2">
+          <p class="text-color m-0">Are you sure you want to delete this task? This cannot be undone.</p>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-secondary px-3" data-bs-dismiss="modal" style="border-radius: 8px;">Cancel</button>
+          <button type="button" class="btn btn-danger px-4" id="btn-confirm-delete-task" style="border-radius: 8px;">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle with Popper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- App JS Files -->
+  <script src="storage.js"></script>
+  <script src="utilities.js"></script>
+  <script src="tasks.js"></script>
+</body>
+</html>

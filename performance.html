@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Performance Metrics | ByteHex Internship Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom Style CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="responsive.css">
+  <style>
+    /* Performance Specific */
+    .metric-bar {
+      height: 6px;
+      border-radius: 4px;
+      background: rgba(0,0,0,0.05);
+      margin-top: 4px;
+      overflow: hidden;
+    }
+    [data-theme="dark"] .metric-bar { background: rgba(255,255,255,0.05); }
+    
+    .metric-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.5s ease-out;
+    }
+    
+    .overall-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    
+    .perf-badge {
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Input Range Sliders */
+    .form-range::-webkit-slider-thumb {
+      background: var(--primary);
+    }
+    .form-range::-webkit-slider-runnable-track {
+      background: rgba(37, 99, 235, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor Followers -->
+  <div class="custom-cursor"></div>
+  <div class="custom-cursor-follower"></div>
+
+  <div class="wrapper">
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Page Content -->
+    <div id="content">
+      <!-- Navbar Container -->
+      <div id="navbar-container"></div>
+
+      <!-- Main View -->
+      <div class="container-fluid p-4">
+        <!-- Breadcrumbs -->
+        <div id="breadcrumb-container"></div>
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+          <div>
+            <h2 class="fw-bold m-0 text-color">Performance Reviews</h2>
+            <p class="text-muted m-0" style="font-size: 0.9rem;">Track metrics, evaluations, and overall standings</p>
+          </div>
+        </div>
+
+        <!-- Top Performer Banner -->
+        <div class="glass-card mb-4 overflow-hidden" style="position: relative; border: none; background: linear-gradient(135deg, rgba(37,99,235,0.1) 0%, rgba(20,184,166,0.1) 100%);">
+          <div class="row align-items-center g-0">
+            <div class="col-12 col-md-8 p-4 p-md-5">
+              <span class="badge bg-warning text-dark mb-2 fw-bold" style="letter-spacing:1px;"><i class="bi bi-star-fill me-1"></i> TOP PERFORMER</span>
+              <h2 class="fw-bold text-primary mb-1" id="top-name">Loading...</h2>
+              <p class="text-muted mb-3" id="top-domain">Domain</p>
+              <div class="d-flex align-items-center gap-4 flex-wrap">
+                <div>
+                  <h4 class="fw-bold m-0 text-color" id="top-score">0%</h4>
+                  <small class="text-muted" style="font-size:0.75rem;">Overall Score</small>
+                </div>
+                <div>
+                  <h4 class="fw-bold m-0 text-color" id="top-attendance">0%</h4>
+                  <small class="text-muted" style="font-size:0.75rem;">Attendance</small>
+                </div>
+                <div>
+                  <h4 class="fw-bold m-0 text-color" id="top-tasks">0%</h4>
+                  <small class="text-muted" style="font-size:0.75rem;">Tasks</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4 d-none d-md-flex align-items-center justify-content-center p-4">
+              <div style="width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display:flex; align-items:center; justify-content:center; box-shadow: 0 10px 25px rgba(37,99,235,0.4);">
+                <i class="bi bi-trophy-fill text-white" style="font-size: 4rem;"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interns Performance Grid -->
+        <div class="glass-card p-4 mb-4">
+          <div class="table-responsive table-responsive-custom">
+            <table class="table table-custom align-middle">
+              <thead>
+                <tr>
+                  <th>Intern</th>
+                  <th style="min-width: 150px;">Core Skills (Avg)</th>
+                  <th style="min-width: 120px;">System Metrics</th>
+                  <th>Rating Badge</th>
+                  <th class="text-center">Overall</th>
+                  <th class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody id="performance-tbody">
+                <!-- Injected via performance.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Evaluation Modal -->
+  <div class="modal fade" id="evalModal" tabindex="-1" aria-labelledby="evalModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-card border border-light-subtle p-3" style="background-color: var(--bg-color);">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold text-color" id="evalModalLabel">Performance Evaluation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: var(--text-color) === '#F8FAFC' ? 'invert(1)' : 'none';"></button>
+        </div>
+        <form id="evalForm">
+          <input type="hidden" id="eval-intern-id">
+          <div class="modal-body py-2">
+            <p class="text-muted mb-4" style="font-size: 0.85rem;">Assess <strong id="eval-intern-name" class="text-primary">Intern Name</strong>'s manual skills. Note: System Metrics (Attendance and Task Completion) are calculated automatically and cannot be changed here.</p>
+            
+            <!-- Communication -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label for="eval-comm" class="form-label fw-semibold m-0" style="font-size: 0.85rem;">Communication</label>
+                <span class="badge bg-secondary" id="val-comm">0%</span>
+              </div>
+              <input type="range" class="form-range" min="0" max="100" id="eval-comm" oninput="document.getElementById('val-comm').textContent = this.value + '%'">
+            </div>
+            
+            <!-- Coding -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label for="eval-code" class="form-label fw-semibold m-0" style="font-size: 0.85rem;">Coding</label>
+                <span class="badge bg-secondary" id="val-code">0%</span>
+              </div>
+              <input type="range" class="form-range" min="0" max="100" id="eval-code" oninput="document.getElementById('val-code').textContent = this.value + '%'">
+            </div>
+            
+            <!-- Problem Solving -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label for="eval-prob" class="form-label fw-semibold m-0" style="font-size: 0.85rem;">Problem Solving</label>
+                <span class="badge bg-secondary" id="val-prob">0%</span>
+              </div>
+              <input type="range" class="form-range" min="0" max="100" id="eval-prob" oninput="document.getElementById('val-prob').textContent = this.value + '%'">
+            </div>
+            
+            <!-- Teamwork -->
+            <div class="mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label for="eval-team" class="form-label fw-semibold m-0" style="font-size: 0.85rem;">Teamwork</label>
+                <span class="badge bg-secondary" id="val-team">0%</span>
+              </div>
+              <input type="range" class="form-range" min="0" max="100" id="eval-team" oninput="document.getElementById('val-team').textContent = this.value + '%'">
+            </div>
+            
+            <!-- Readonly System Metrics -->
+            <div class="row g-2 p-3 rounded-3" style="background: rgba(0,0,0,0.03);">
+              <div class="col-6">
+                <small class="text-muted d-block fw-semibold mb-1">Attendance</small>
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-calendar-check text-primary"></i>
+                  <span class="fw-bold text-color" id="eval-sys-att">0%</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <small class="text-muted d-block fw-semibold mb-1">Tasks Done</small>
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-list-check text-accent"></i>
+                  <span class="fw-bold text-color" id="eval-sys-task">0%</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-outline-secondary px-3" data-bs-dismiss="modal" style="border-radius: 8px;">Cancel</button>
+            <button type="submit" class="btn btn-primary-custom px-4" style="border-radius: 8px;">Save Evaluation</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle with Popper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- App JS Files -->
+  <script src="storage.js"></script>
+  <script src="utilities.js"></script>
+  <script src="performance.js"></script>
+</body>
+</html>

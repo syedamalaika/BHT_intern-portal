@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interns Directory | ByteHex Internship Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom Style CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+
+  <!-- Custom Cursor Followers -->
+  <div class="custom-cursor"></div>
+  <div class="custom-cursor-follower"></div>
+
+  <div class="wrapper">
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Page Content -->
+    <div id="content">
+      <!-- Navbar Container -->
+      <div id="navbar-container"></div>
+
+      <!-- Main Directory View -->
+      <div class="container-fluid p-4">
+        <!-- Breadcrumbs -->
+        <div id="breadcrumb-container"></div>
+
+        <!-- Directory Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+          <div>
+            <h2 class="fw-bold m-0 text-color">Intern Database</h2>
+            <p class="text-muted m-0" style="font-size: 0.9rem;">View, search, filter, and manage registered interns</p>
+          </div>
+          <div>
+            <a href="add-intern.html" class="btn btn-primary-custom d-flex align-items-center gap-2">
+              <i class="bi bi-person-plus-fill"></i> Register New Intern
+            </a>
+          </div>
+        </div>
+
+        <!-- Search, Filter & Operations Bar -->
+        <div class="glass-card p-3 mb-4">
+          <div class="row g-3 align-items-center">
+            <!-- Search bar -->
+            <div class="col-12 col-md-4 col-lg-5">
+              <div class="input-group">
+                <span class="input-group-text bg-transparent border-end-0 border-light-subtle" style="border-radius: 10px 0 0 10px;"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" class="form-control form-control-custom border-start-0 ps-0" id="search-input" placeholder="Search by name, email, university, skills..." style="border-radius: 0 10px 10px 0;">
+              </div>
+            </div>
+            <!-- Domain filter -->
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+              <select class="form-select form-control-custom" id="filter-domain" style="cursor: pointer;">
+                <option value="">All Domains</option>
+                <option value="Web Development">Web Development</option>
+                <option value="Backend Development">Backend Development</option>
+                <option value="Machine Learning">Machine Learning</option>
+                <option value="Cybersecurity">Cybersecurity</option>
+                <option value="UI/UX Design">UI/UX Design</option>
+              </select>
+            </div>
+            <!-- Status filter -->
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+              <select class="form-select form-control-custom" id="filter-status" style="cursor: pointer;">
+                <option value="">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
+            <!-- Sorting selector -->
+            <div class="col-12 col-sm-12 col-md-2 col-lg-3 d-flex justify-content-end gap-2">
+              <select class="form-select form-control-custom" id="sort-selector" style="cursor: pointer;">
+                <option value="id-asc">ID (Low to High)</option>
+                <option value="id-desc">ID (High to Low)</option>
+                <option value="name-asc">Name (A-Z)</option>
+                <option value="name-desc">Name (Z-A)</option>
+                <option value="date-desc">Newest Joined</option>
+                <option value="date-asc">Oldest Joined</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interns Directory Table -->
+        <div class="glass-card p-4 mb-4">
+          <div class="table-responsive table-responsive-custom">
+            <table class="table table-custom table-hover">
+              <thead>
+                <tr>
+                  <th>Intern ID</th>
+                  <th>Name & Contact</th>
+                  <th>University & Dept</th>
+                  <th>Domain & Skills</th>
+                  <th>Duration</th>
+                  <th>Status</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="interns-directory-tbody">
+                <!-- Injected via interns.js -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-2">
+            <span class="text-muted" style="font-size: 0.85rem;" id="pagination-stats">Showing 1-5 of 10 interns</span>
+            <nav aria-label="Interns pagination">
+              <ul class="pagination pagination-sm m-0" id="pagination-links" style="cursor: pointer;">
+                <!-- Injected dynamically -->
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-card border border-light-subtle p-3" style="background-color: var(--bg-color);">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold text-color" id="deleteConfirmModalLabel">Delete Intern Record</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: var(--text-color) === '#F8FAFC' ? 'invert(1)' : 'none';"></button>
+        </div>
+        <div class="modal-body py-3">
+          <p class="text-color m-0">Are you sure you want to permanently delete intern <strong id="delete-intern-name" class="text-primary">Alex Mercer</strong> (<span id="delete-intern-id" class="font-monospace fw-bold">BH-1001</span>)? This operation cannot be undone and will also clear their corresponding attendance and performance review profiles.</p>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-secondary px-3" data-bs-dismiss="modal" style="border-radius: 8px;">Cancel</button>
+          <button type="button" class="btn btn-danger px-4" id="btn-confirm-delete" style="border-radius: 8px;">Delete Record</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle with Popper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- App JS Files -->
+  <script src="storage.js"></script>
+  <script src="utilities.js"></script>
+  <script src="interns.js"></script>
+</body>
+</html>

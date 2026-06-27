@@ -1,0 +1,96 @@
+/* Responsive CSS */
+
+@media (max-width: 991.98px) {
+  /* Collapse Sidebar by default on mobile/tablets */
+  #sidebar {
+    margin-left: -260px;
+    position: fixed;
+    height: 100vh;
+  }
+  
+  #sidebar.active {
+    margin-left: 0;
+  }
+  
+  #content {
+    width: 100%;
+  }
+  
+  .navbar-custom {
+    padding: 15px 20px;
+  }
+  
+  /* Make sidebar toggle button visible and prominent */
+  #sidebarCollapse {
+    display: inline-block !important;
+  }
+}
+
+@media (min-width: 992px) {
+  #sidebarCollapse {
+    display: none !important;
+  }
+  
+  /* Toggle state for desktop (optional collapse) */
+  #sidebar.active {
+    margin-left: -260px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .stats-card {
+    padding: 16px;
+  }
+  
+  .stats-card .stats-info h3 {
+    font-size: 1.5rem;
+  }
+  
+  .stats-card .stats-icon-wrapper {
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+  }
+  
+  /* Adjust container paddings */
+  .container-fluid {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+  
+  /* Form adjustments */
+  .form-control-custom {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+  
+  .btn-primary-custom {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+  }
+  
+  /* Stack stats and actions */
+  .quick-action-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .quick-action-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .profile-dropdown-btn span {
+    display: none; /* Hide profile name, keep image on super small screens */
+  }
+  
+  .breadcrumb-custom {
+    font-size: 0.8rem;
+  }
+  
+  /* Stack card contents vertically */
+  .stats-card {
+    flex-direction: row;
+    align-items: center;
+  }
+}

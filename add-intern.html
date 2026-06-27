@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Intern | ByteHex Internship Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom Style CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+
+  <!-- Custom Cursor Followers -->
+  <div class="custom-cursor"></div>
+  <div class="custom-cursor-follower"></div>
+
+  <div class="wrapper">
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Page Content -->
+    <div id="content">
+      <!-- Navbar Container -->
+      <div id="navbar-container"></div>
+
+      <!-- Main Add / Edit View -->
+      <div class="container-fluid p-4">
+        <!-- Breadcrumbs -->
+        <div id="breadcrumb-container"></div>
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h2 class="fw-bold m-0 text-color" id="form-title-h2">Register Intern</h2>
+            <p class="text-muted m-0" style="font-size: 0.9rem;" id="form-desc-p">Add a new intern profile to the system database</p>
+          </div>
+          <div>
+            <a href="interns.html" class="btn btn-outline-secondary d-flex align-items-center gap-2" style="border-radius: 12px;">
+              <i class="bi bi-arrow-left"></i> Back to Directory
+            </a>
+          </div>
+        </div>
+
+        <!-- Form Card -->
+        <div class="glass-card p-4 mx-auto" style="max-width: 900px;">
+          <form id="internForm">
+            <div class="row g-4">
+              <!-- Auto Generated ID -->
+              <div class="col-12 col-sm-6">
+                <label for="intern-id" class="form-label fw-semibold" style="font-size: 0.85rem;">Intern ID (Auto-Generated)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-transparent border-end-0 border-light-subtle" style="border-radius: 10px 0 0 10px;"><i class="bi bi-fingerprint text-muted"></i></span>
+                  <input type="text" class="form-control form-control-custom border-start-0 ps-0 fw-bold font-monospace text-primary" id="intern-id" readonly style="border-radius: 0 10px 10px 0; background: rgba(37,99,235,0.03);">
+                </div>
+              </div>
+
+              <!-- Full Name -->
+              <div class="col-12 col-sm-6">
+                <label for="intern-name" class="form-label fw-semibold" style="font-size: 0.85rem;">Full Name</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-transparent border-end-0 border-light-subtle" style="border-radius: 10px 0 0 10px;"><i class="bi bi-person text-muted"></i></span>
+                  <input type="text" class="form-control form-control-custom border-start-0 ps-0" id="intern-name" placeholder="e.g. John Doe" style="border-radius: 0 10px 10px 0;" required>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="col-12 col-sm-6">
+                <label for="intern-email" class="form-label fw-semibold" style="font-size: 0.85rem;">Email Address</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-transparent border-end-0 border-light-subtle" style="border-radius: 10px 0 0 10px;"><i class="bi bi-envelope text-muted"></i></span>
+                  <input type="email" class="form-control form-control-custom border-start-0 ps-0" id="intern-email" placeholder="e.g. johndoe@gmail.com" style="border-radius: 0 10px 10px 0;" required>
+                </div>
+              </div>
+
+              <!-- Phone -->
+              <div class="col-12 col-sm-6">
+                <label for="intern-phone" class="form-label fw-semibold" style="font-size: 0.85rem;">Phone Number</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-transparent border-end-0 border-light-subtle" style="border-radius: 10px 0 0 10px;"><i class="bi bi-telephone text-muted"></i></span>
+                  <input type="tel" class="form-control form-control-custom border-start-0 ps-0" id="intern-phone" placeholder="e.g. +1 (555) 019-2834" style="border-radius: 0 10px 10px 0;" required>
+                </div>
+              </div>
+
+              <!-- Gender -->
+              <div class="col-12 col-sm-6">
+                <label for="intern-gender" class="form-label fw-semibold" style="font-size: 0.85rem;">Gender</label>
+                <select class="form-select form-control-custom" id="intern-gender" required>
+                  <option value="" disabled selected>Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <!-- University -->
+              <div class="col-12 col-sm-6">
+                <label for="intern-university" class="form-label fw-semibold" style="font-size: 0.85rem;">University Name</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-transparent border-end-0 border-light-subtle" style="border-radius: 10px 0 0 10px;"><i class="bi bi-building text-muted"></i></span>
+                  <input type="text" class="form-control form-control-custom border-start-0 ps-0" id="intern-university" placeholder="e.g. Stanford University" style="border-radius: 0 10px 10px 0;" required>
+                </div>
+              </div>
+
+              <!-- Department -->
+              <div class="col-12 col-sm-6">
+                <label for="intern-dept" class="form-label fw-semibold" style="font-size: 0.85rem;">Academic Department</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-transparent border-end-0 border-light-subtle" style="border-radius: 10px 0 0 10px;"><i class="bi bi-journal-code text-muted"></i></span>
+                  <input type="text" class="form-control form-control-custom border-start-0 ps-0" id="intern-dept" placeholder="e.g. Computer Science" style="border-radius: 0 10px 10px 0;" required>
+                </div>
+              </div>
+
+              <!-- Internship Domain -->
+              <div class="col-12 col-sm-6">
+                <label for="intern-domain" class="form-label fw-semibold" style="font-size: 0.85rem;">Internship Domain</label>
+                <select class="form-select form-control-custom" id="intern-domain" required>
+                  <option value="" disabled selected>Select Domain</option>
+                  <option value="Web Development">Web Development</option>
+                  <option value="Backend Development">Backend Development</option>
+                  <option value="Machine Learning">Machine Learning</option>
+                  <option value="Cybersecurity">Cybersecurity</option>
+                  <option value="UI/UX Design">UI/UX Design</option>
+                </select>
+              </div>
+
+              <!-- Skills (comma-separated tags) -->
+              <div class="col-12">
+                <label for="intern-skills" class="form-label fw-semibold" style="font-size: 0.85rem;">Key Technical Skills (Comma-separated)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-transparent border-end-0 border-light-subtle" style="border-radius: 10px 0 0 10px;"><i class="bi bi-tag-fill text-muted"></i></span>
+                  <input type="text" class="form-control form-control-custom border-start-0 ps-0" id="intern-skills" placeholder="e.g. HTML, CSS, JavaScript, Bootstrap" style="border-radius: 0 10px 10px 0;" required>
+                </div>
+                <small class="text-muted d-block mt-1">Separate skills with commas (e.g. React, Docker, Python)</small>
+              </div>
+
+              <!-- Joining Date -->
+              <div class="col-12 col-sm-4">
+                <label for="intern-joining" class="form-label fw-semibold" style="font-size: 0.85rem;">Joining Date</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-transparent border-end-0 border-light-subtle" style="border-radius: 10px 0 0 10px;"><i class="bi bi-calendar-event text-muted"></i></span>
+                  <input type="date" class="form-control form-control-custom border-start-0 ps-0" id="intern-joining" style="border-radius: 0 10px 10px 0;" required>
+                </div>
+              </div>
+
+              <!-- Internship Duration -->
+              <div class="col-12 col-sm-4">
+                <label for="intern-duration" class="form-label fw-semibold" style="font-size: 0.85rem;">Internship Duration</label>
+                <select class="form-select form-control-custom" id="intern-duration" required>
+                  <option value="" disabled selected>Select Duration</option>
+                  <option value="1 Month">1 Month</option>
+                  <option value="2 Months">2 Months</option>
+                  <option value="3 Months">3 Months</option>
+                  <option value="6 Months">6 Months</option>
+                </select>
+              </div>
+
+              <!-- Status -->
+              <div class="col-12 col-sm-4">
+                <label for="intern-status" class="form-label fw-semibold" style="font-size: 0.85rem;">Status</label>
+                <select class="form-select form-control-custom" id="intern-status" required>
+                  <option value="Active">Active</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+
+              <!-- Form Buttons -->
+              <div class="col-12 d-flex justify-content-end gap-3 pt-3 border-top border-light-subtle mt-4">
+                <button type="reset" class="btn btn-outline-secondary px-4 py-2" id="btn-reset" style="border-radius: 10px;">Reset Fields</button>
+                <button type="submit" class="btn btn-primary-custom px-5 py-2 d-flex align-items-center gap-2" id="btn-submit">
+                  <i class="bi bi-check-circle-fill"></i> Save Intern
+                </button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle with Popper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- App JS Files -->
+  <script src="storage.js"></script>
+  <script src="utilities.js"></script>
+  <script src="interns.js"></script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+/* Import Poppins Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* CSS Variables */
+:root {
+  --primary: #1E3A8A; /* Navy Blue */
+  --primary-hover: #1E40AF;
+  --secondary: #D4AF37; /* Gold */
+  --accent: #F59E0B; /* Bright Gold */
+  --bg-color: #F8FAFC;
+  --text-color: #0F172A;
+  --text-muted: #475569;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(30, 58, 138, 0.15); /* Navy tint */
+  --shadow-color: rgba(30, 58, 138, 0.1);
+  --sidebar-gradient: linear-gradient(180deg, #0F172A 0%, #1E3A8A 100%);
+  --sidebar-text: #E2E8F0;
+  --sidebar-active-bg: rgba(212, 175, 55, 0.2); /* Gold active bg */
+  --border-radius: 16px;
+  --glass-blur: 12px;
+  --neon-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  --font-family: 'Poppins', sans-serif;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode Variables */
+[data-theme="dark"] {
+  --bg-color: #0B0F19; /* Very dark blue-black */
+  --text-color: #F8FAFC;
+  --text-muted: #94A3B8;
+  --card-bg: rgba(15, 23, 42, 0.7); /* Navy dark card */
+  --card-border: rgba(212, 175, 55, 0.15); /* Gold tint border */
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --sidebar-gradient: linear-gradient(180deg, #020617 0%, #0B0F19 100%);
+  --sidebar-text: #94A3B8;
+  --sidebar-active-bg: rgba(212, 175, 55, 0.15);
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Cursor & Follower */
+.custom-cursor {
+  width: 8px;
+  height: 8px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+.custom-cursor-follower {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--secondary);
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.08s ease-out, width 0.2s, height 0.2s, border-color 0.2s;
+}
+
+/* Hide cursor elements on touch devices */
+@media (max-width: 991px) {
+  .custom-cursor, .custom-cursor-follower {
+    display: none !important;
+  }
+}
+
+/* Glassmorphism Combined with Soft Neumorphism */
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--card-border);
+  border-radius: var(--border-radius);
+  box-shadow: 6px 6px 18px var(--shadow-color), 
+              -6px -6px 18px rgba(255, 255, 255, 0.05);
+  transition: var(--transition);
+}
+
+.glass-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 8px 8px 24px var(--shadow-color), 
+              -8px -8px 24px rgba(255, 255, 255, 0.08);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s ease-out forwards;
+}
+
+/* Buttons and Inputs */
+.btn-primary-custom {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 24px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+  color: white;
+}
+
+.btn-primary-custom:active {
+  transform: translateY(0);
+}
+
+.form-control-custom {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: var(--text-color);
+  transition: var(--transition);
+}
+
+.form-control-custom:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.15);
+  outline: none;
+  color: var(--text-color);
+}
+
+/* Toast Notifications Container */
+.toast-container-custom {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.toast-custom {
+  min-width: 300px;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border-left: 4px solid var(--primary);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 10px 25px var(--shadow-color);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideInLeft 0.3s ease-out forwards;
+  color: var(--text-color);
+}
+
+.toast-custom.success { border-left-color: var(--accent); }
+.toast-custom.danger { border-left-color: #EF4444; }
+.toast-custom.warning { border-left-color: #F59E0B; }
+
+@keyframes slideInLeft {
+  from { transform: translateX(120%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; transform: translateY(10px); }
+}

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | ByteHex Tech</title>
+  <script>
+    (function() {
+      try {
+        var settings = JSON.parse(localStorage.getItem('bytehex_settings'));
+        if (settings && settings.darkMode) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Splash Screen Styling */
+    .splash-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-color);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease-out, visibility 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .splash-logo {
+      width: 180px;
+      margin-bottom: 20px;
+      animation: pulseLogo 1.5s infinite alternate ease-in-out;
+      filter: drop-shadow(0 0 20px rgba(30, 58, 138, 0.4));
+    }
+    @keyframes pulseLogo {
+      0% { transform: scale(1); opacity: 0.9; filter: drop-shadow(0 0 10px rgba(30, 58, 138, 0.2)); }
+      100% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 30px rgba(30, 58, 138, 0.8)); }
+    }
+    .splash-screen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.1);
+    }
+    
+    /* Custom Login Page Styling */
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 10% 20%, rgba(30, 58, 138, 0.15) 0%, transparent 40%),
+                  radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.15) 0%, transparent 40%),
+                  var(--bg-color);
+      padding: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease 0.5s, transform 1s ease 0.5s;
+    }
+    .login-container.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .login-card {
+      width: 100%;
+      max-width: 450px;
+      padding: 40px;
+      border: 1px solid var(--card-border);
+    }
+    .login-logo {
+      width: 100px;
+      height: auto;
+      margin: 0 auto 15px auto;
+      display: block;
+    }
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      color: var(--text-muted);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+    }
+    .social-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(30, 58, 138, 0.3);
+      border-color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated Splash Screen -->
+  <div class="splash-screen" id="splashScreen">
+    <img src="assets/images/logo.png" alt="ByteHex Tech Logo" class="splash-logo" onerror="this.src='https://placehold.co/200x200/171719/3EA7AD?text=BHT'">
+    <h3 class="fw-bold text-color mt-3" style="letter-spacing: 2px;">BYTEHEX <span style="color: var(--primary);">TECH</span></h3>
+    <div class="spinner-border text-primary mt-4" role="status" style="width: 1.5rem; height: 1.5rem;">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div class="login-container" id="loginContainer">
+    <div class="glass-card login-card">
+      <div class="text-center mb-4">
+        <img src="assets/images/logo.png" alt="ByteHex Tech Logo" class="login-logo" onerror="this.src='https://placehold.co/100x100/171719/3EA7AD?text=BHT'">
+        <h3 class="fw-bold mb-1">ByteHex Tech</h3>
+        <p class="text-muted" style="font-size: 0.9rem;">Internship Management Portal</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="mb-3">
+          <label for="email" class="form-label" style="font-size: 0.85rem; font-weight: 500;">Email Address</label>
+          <div class="input-group">
+            <span class="input-group-text bg-transparent border-end-0 border-light-subtle" style="border-radius: 10px 0 0 10px;"><i class="bi bi-envelope text-muted"></i></span>
+            <input type="email" class="form-control form-control-custom border-start-0 ps-0" id="email" placeholder="you@example.com" style="border-radius: 0 10px 10px 0;" required>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="password" class="form-label" style="font-size: 0.85rem; font-weight: 500;">Password</label>
+          <div class="input-group">
+            <span class="input-group-text bg-transparent border-end-0 border-light-subtle" style="border-radius: 10px 0 0 10px;"><i class="bi bi-lock text-muted"></i></span>
+            <input type="password" class="form-control form-control-custom border-start-0 ps-0" id="password" placeholder="Create or enter any password" style="border-radius: 0 10px 10px 0;" required>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between mb-4" style="font-size: 0.85rem;">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="rememberMe" style="cursor: pointer;">
+            <label class="form-check-label text-muted" for="rememberMe" style="cursor: pointer;">Remember me</label>
+          </div>
+          <a href="#" class="text-primary text-decoration-none" onclick="showToast('Any email and password works!', 'info')">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary-custom w-100 py-3 d-flex align-items-center justify-content-center gap-2 mb-4">
+          Secure Login <i class="bi bi-arrow-right"></i>
+        </button>
+      </form>
+
+      <!-- Social Links -->
+      <div class="text-center pt-3 border-top border-light-subtle">
+        <p class="text-muted mb-3" style="font-size: 0.8rem;">Connect with us</p>
+        <div class="d-flex justify-content-center gap-3">
+          <a href="https://www.linkedin.com/company/bytehex-tech" target="_blank" class="social-btn" title="LinkedIn">
+            <i class="bi bi-linkedin"></i>
+          </a>
+          <a href="https://www.facebook.com/bytehextech" target="_blank" class="social-btn" title="Facebook">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="#" class="social-btn" title="Website">
+            <i class="bi bi-globe"></i>
+          </a>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Toast Notification Area -->
+  <div class="toast-container-custom"></div>
+
+  <!-- Core Scripts -->
+  <script>
+    // Splash Screen Logic
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const splash = document.getElementById('splashScreen');
+        const login = document.getElementById('loginContainer');
+        if(splash && login) {
+          splash.classList.add('fade-out');
+          login.classList.add('show');
+          setTimeout(() => {
+            splash.style.display = 'none';
+          }, 800); // Wait for transition
+        }
+      }, 2500); // Show splash for 2.5 seconds
+    });
+  </script>
+  <script src="storage.js"></script>
+  <script src="utilities.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>

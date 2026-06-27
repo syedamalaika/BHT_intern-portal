@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificates | ByteHex Internship Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom Style CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="responsive.css">
+  <style>
+    /* Certificate specific layout */
+    .cert-preview-area {
+      width: 100%;
+      aspect-ratio: 1.414; /* A4 landscape approx */
+      background: #FFF;
+      color: #1E293B;
+      border: 10px solid var(--primary);
+      position: relative;
+      padding: 40px;
+      text-align: center;
+      background-image: radial-gradient(circle at center, rgba(37,99,235,0.05) 0%, transparent 70%);
+    }
+    .cert-inner-border {
+      border: 2px solid var(--secondary);
+      height: 100%;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .cert-title {
+      font-family: serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 30px;
+    }
+    .cert-name {
+      font-family: 'Great Vibes', cursive, serif;
+      font-size: 3rem;
+      font-style: italic;
+      color: #0F172A;
+      margin: 20px 0;
+      border-bottom: 2px solid var(--accent);
+      display: inline-block;
+      padding: 0 40px;
+    }
+    .cert-seal {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    
+    .status-badge-cert {
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor Followers -->
+  <div class="custom-cursor"></div>
+  <div class="custom-cursor-follower"></div>
+
+  <div class="wrapper">
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Page Content -->
+    <div id="content">
+      <!-- Navbar Container -->
+      <div id="navbar-container"></div>
+
+      <!-- Main View -->
+      <div class="container-fluid p-4">
+        <!-- Breadcrumbs -->
+        <div id="breadcrumb-container"></div>
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+          <div>
+            <h2 class="fw-bold m-0 text-color">Certificate Tracker</h2>
+            <p class="text-muted m-0" style="font-size: 0.9rem;">Review eligibility and issue digital completion certificates</p>
+          </div>
+        </div>
+        
+        <!-- Stats Widgets -->
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-3">
+            <div class="glass-card p-3 text-center border-start border-4 border-secondary">
+              <h3 class="fw-bold m-0 text-color" id="count-under-review">0</h3>
+              <small class="text-muted">Under Review</small>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="glass-card p-3 text-center border-start border-4 border-warning">
+              <h3 class="fw-bold m-0 text-color" id="count-ready">0</h3>
+              <small class="text-muted">Ready for Issue</small>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="glass-card p-3 text-center border-start border-4 border-success">
+              <h3 class="fw-bold m-0 text-color" id="count-issued">0</h3>
+              <small class="text-muted">Certificates Issued</small>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="glass-card p-3 text-center border-start border-4 border-danger">
+              <h3 class="fw-bold m-0 text-color" id="count-not-eligible">0</h3>
+              <small class="text-muted">Not Eligible</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certificates Grid -->
+        <div class="glass-card p-4">
+          <div class="table-responsive table-responsive-custom">
+            <table class="table table-custom align-middle">
+              <thead>
+                <tr>
+                  <th>Intern ID</th>
+                  <th>Name & Domain</th>
+                  <th>Expected Completion Date</th>
+                  <th>Status</th>
+                  <th class="text-center">Action / Issue</th>
+                </tr>
+              </thead>
+              <tbody id="certificates-tbody">
+                <!-- Injected via certificates.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview Certificate Modal -->
+  <div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content glass-card border border-light-subtle p-3" style="background-color: var(--bg-color);">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold text-color">Digital Certificate Preview</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: var(--text-color) === '#F8FAFC' ? 'invert(1)' : 'none';"></button>
+        </div>
+        <div class="modal-body p-4 bg-light rounded-3" style="overflow-x: auto;">
+          <!-- Authentic looking certificate layout -->
+          <div class="cert-preview-area shadow-sm mx-auto" style="min-width: 700px; max-width: 900px;" id="printable-cert">
+            <div class="cert-inner-border">
+              <div class="cert-seal"><i class="bi bi-award-fill"></i></div>
+              <h1 class="cert-title">Certificate of Completion</h1>
+              <p class="text-muted mb-2 fs-5">This is to certify that</p>
+              <h2 class="cert-name" id="cert-display-name">Intern Name</h2>
+              <p class="text-muted fs-5 mt-3 mb-2" style="max-width: 600px; line-height: 1.6;">
+                Has successfully completed their comprehensive internship program in <br>
+                <strong class="text-dark fs-4" id="cert-display-domain">Domain Name</strong>.
+              </p>
+              <div class="d-flex justify-content-between align-items-end w-100 mt-5 px-5">
+                <div class="text-start">
+                  <div class="border-bottom border-dark mb-1" style="width: 150px; height: 30px;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Signature_of_John_Hancock.svg" style="height:30px; opacity:0.7;">
+                  </div>
+                  <small class="fw-bold text-dark text-uppercase">Program Director</small>
+                </div>
+                <div class="text-center">
+                  <i class="bi bi-hexagon-fill text-primary mb-2" style="font-size: 2rem;"></i>
+                  <h5 class="fw-bold text-primary m-0">ByteHex Ltd.</h5>
+                </div>
+                <div class="text-end">
+                  <div class="border-bottom border-dark mb-1 text-center" style="width: 150px; height: 30px; line-height:35px;">
+                    <span class="text-dark fw-bold" id="cert-display-date">12-Aug-2026</span>
+                  </div>
+                  <small class="fw-bold text-dark text-uppercase">Issue Date</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0 d-flex justify-content-between">
+          <div>
+            <span class="text-muted" style="font-size: 0.85rem;" id="cert-status-helper">Status: Ready to issue</span>
+          </div>
+          <div>
+            <button type="button" class="btn btn-outline-secondary px-3" data-bs-dismiss="modal" style="border-radius: 8px;">Close Preview</button>
+            <button type="button" class="btn btn-success px-4" id="btn-issue-cert" style="border-radius: 8px;"><i class="bi bi-check-circle-fill"></i> Confirm & Issue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Changer Modal -->
+  <div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content glass-card p-3">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold text-color">Change Status</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body py-2">
+          <input type="hidden" id="status-intern-id">
+          <select class="form-select form-control-custom" id="status-select">
+            <option value="Not Eligible">Not Eligible</option>
+            <option value="Under Review">Under Review</option>
+            <option value="Ready">Ready</option>
+          </select>
+        </div>
+        <div class="modal-footer border-0 p-2">
+          <button class="btn btn-primary-custom w-100" id="btn-save-status">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle with Popper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- App JS Files -->
+  <script src="storage.js"></script>
+  <script src="utilities.js"></script>
+  <script src="certificates.js"></script>
+</body>
+</html>

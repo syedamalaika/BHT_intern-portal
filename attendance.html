@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance | ByteHex Internship Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom Style CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="responsive.css">
+  <style>
+    .attendance-btn {
+      width: 35px;
+      height: 35px;
+      padding: 0;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+    .attendance-btn.active-present {
+      background-color: #10B981;
+      color: white;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+    }
+    .attendance-btn.active-absent {
+      background-color: #EF4444;
+      color: white;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+    }
+    .attendance-btn.active-late {
+      background-color: #F59E0B;
+      color: white;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+    }
+    .attendance-btn:hover {
+      transform: scale(1.1);
+    }
+    .status-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      width: 70px;
+      display: inline-block;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor Followers -->
+  <div class="custom-cursor"></div>
+  <div class="custom-cursor-follower"></div>
+
+  <div class="wrapper">
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Page Content -->
+    <div id="content">
+      <!-- Navbar Container -->
+      <div id="navbar-container"></div>
+
+      <!-- Main View -->
+      <div class="container-fluid p-4">
+        <!-- Breadcrumbs -->
+        <div id="breadcrumb-container"></div>
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+          <div>
+            <h2 class="fw-bold m-0 text-color">Attendance Register</h2>
+            <p class="text-muted m-0" style="font-size: 0.9rem;">Mark and review daily attendance logs</p>
+          </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+          <!-- Controls Card -->
+          <div class="col-12 col-lg-8">
+            <div class="glass-card p-4 h-100">
+              <div class="row align-items-end g-3">
+                <div class="col-12 col-md-5">
+                  <label for="attendance-date" class="form-label fw-semibold" style="font-size: 0.85rem;">Select Date</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-transparent border-end-0 border-light-subtle"><i class="bi bi-calendar3 text-muted"></i></span>
+                    <input type="date" class="form-control form-control-custom border-start-0 ps-0" id="attendance-date">
+                  </div>
+                </div>
+                <div class="col-12 col-md-7 d-flex gap-2">
+                  <button class="btn btn-outline-success flex-grow-1 border-2 fw-semibold" style="border-radius: 10px;" id="btn-mark-all-present">
+                    <i class="bi bi-check-all"></i> Mark All Present
+                  </button>
+                  <button class="btn btn-outline-secondary px-3 border-2 fw-semibold" style="border-radius: 10px;" id="btn-clear-day">
+                    <i class="bi bi-eraser-fill"></i> Clear Day
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Summary Card -->
+          <div class="col-12 col-lg-4">
+            <div class="glass-card p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
+              <h6 class="text-muted mb-2 text-uppercase fw-bold" style="letter-spacing: 1px; font-size: 0.75rem;">Selected Day Summary</h6>
+              <div class="d-flex align-items-center justify-content-center gap-4 w-100">
+                <div>
+                  <h3 class="fw-bold m-0 text-success" id="sum-present">0</h3>
+                  <small class="text-muted" style="font-size: 0.75rem;">Present</small>
+                </div>
+                <div>
+                  <h3 class="fw-bold m-0 text-warning" id="sum-late">0</h3>
+                  <small class="text-muted" style="font-size: 0.75rem;">Late</small>
+                </div>
+                <div>
+                  <h3 class="fw-bold m-0 text-danger" id="sum-absent">0</h3>
+                  <small class="text-muted" style="font-size: 0.75rem;">Absent</small>
+                </div>
+              </div>
+              <div class="mt-3 pt-3 border-top w-100 border-light-subtle">
+                <span class="fw-bold text-color">Overall Rate: <span class="text-primary fs-5" id="sum-rate">0%</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Attendance Table -->
+        <div class="glass-card p-4 mb-4">
+          <div class="table-responsive table-responsive-custom">
+            <table class="table table-custom table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Intern Details</th>
+                  <th>Domain</th>
+                  <th class="text-center">Current Status</th>
+                  <th class="text-center">Mark Attendance</th>
+                </tr>
+              </thead>
+              <tbody id="attendance-tbody">
+                <!-- Injected via attendance.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle with Popper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- App JS Files -->
+  <script src="storage.js"></script>
+  <script src="utilities.js"></script>
+  <script src="attendance.js"></script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+/* Dashboard Layout */
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  min-height: 100vh;
+}
+
+/* Sidebar Styles */
+#sidebar {
+  min-width: 260px;
+  max-width: 260px;
+  background: var(--sidebar-gradient);
+  color: var(--sidebar-text);
+  transition: var(--transition);
+  z-index: 999;
+  position: relative;
+  box-shadow: 4px 0 15px var(--shadow-color);
+}
+
+#sidebar .sidebar-header {
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#sidebar .sidebar-header h4 {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-size: 1.25rem;
+}
+
+#sidebar ul.components {
+  padding: 20px 0;
+}
+
+#sidebar ul p {
+  padding: 10px 24px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 5px;
+}
+
+#sidebar ul li a {
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  transition: var(--transition);
+  border-left: 4px solid transparent;
+}
+
+#sidebar ul li a:hover {
+  color: #FFF;
+  background: var(--sidebar-active-bg);
+  border-left-color: var(--secondary);
+}
+
+#sidebar ul li.active > a {
+  color: #FFF;
+  background: var(--sidebar-active-bg);
+  border-left-color: var(--primary);
+  font-weight: 500;
+}
+
+/* Content Area */
+#content {
+  width: 100%;
+  padding: 0;
+  min-height: 100vh;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar */
+.navbar-custom {
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 1px solid var(--card-border);
+  padding: 15px 30px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.profile-dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  padding: 5px 10px;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.profile-dropdown-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.profile-img-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary);
+}
+
+/* Main Dashboard Cards */
+.stats-card {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stats-card .stats-info h6 {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.stats-card .stats-info h3 {
+  font-weight: 700;
+  margin-bottom: 0;
+  font-size: 1.75rem;
+}
+
+.stats-card .stats-icon-wrapper {
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.icon-blue { background: rgba(37, 99, 235, 0.12); color: var(--primary); }
+.icon-sky { background: rgba(14, 165, 233, 0.12); color: var(--secondary); }
+.icon-teal { background: rgba(20, 184, 166, 0.12); color: var(--accent); }
+.icon-red { background: rgba(239, 68, 68, 0.12); color: #EF4444; }
+.icon-orange { background: rgba(245, 158, 11, 0.12); color: #F59E0B; }
+.icon-purple { background: rgba(139, 92, 246, 0.12); color: #8B5CF6; }
+
+/* Quick Actions & Recent Activities */
+.quick-action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border-radius: var(--border-radius);
+  border: 1px dashed var(--card-border);
+  background: var(--card-bg);
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.quick-action-btn i {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  color: var(--primary);
+}
+
+.quick-action-btn:hover {
+  border-color: var(--primary);
+  background: rgba(37, 99, 235, 0.05);
+  transform: translateY(-3px);
+  color: var(--primary);
+}
+
+/* Table Style custom */
+.table-responsive-custom {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+}
+
+.table-custom {
+  margin-bottom: 0;
+  background: transparent !important;
+  color: var(--text-color);
+}
+
+.table-custom th {
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 16px;
+  border-bottom: 2px solid var(--card-border);
+}
+
+[data-theme="dark"] .table-custom th {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.table-custom td {
+  padding: 16px;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--card-border);
+  background: transparent !important;
+  color: var(--text-color);
+}
+
+/* Badges */
+.badge-custom {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.badge-active { background: rgba(20, 184, 166, 0.12); color: var(--accent); }
+.badge-completed { background: rgba(37, 99, 235, 0.12); color: var(--primary); }
+.badge-pending { background: rgba(245, 158, 11, 0.12); color: #F59E0B; }
+.badge-absent { background: rgba(239, 68, 68, 0.12); color: #EF4444; }
+
+/* Breadcrumbs */
+.breadcrumb-custom {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+.breadcrumb-item a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.breadcrumb-item a:hover {
+  color: var(--primary);
+}
+
+.breadcrumb-item.active {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+/* Dark Mode Toggle Switch */
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.theme-switch {
+  display: inline-block;
+  height: 24px;
+  position: relative;
+  width: 48px;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.slider-toggle {
+  background-color: #CBD5E1;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider-toggle:before {
+  background-color: white;
+  bottom: 3px;
+  content: "";
+  height: 18px;
+  left: 4px;
+  position: absolute;
+  transition: .4s;
+  width: 18px;
+  border-radius: 50%;
+}
+
+input:checked + .slider-toggle {
+  background-color: var(--primary);
+}
+
+input:checked + .slider-toggle:before {
+  transform: translateX(22px);
+}
